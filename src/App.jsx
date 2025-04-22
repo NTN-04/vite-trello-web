@@ -5,11 +5,14 @@ import HomeIcon from '@mui/icons-material/Home'
 
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm'
 import ThreeDRotation from '@mui/icons-material/ThreeDRotation'
+import Typography from '@mui/material/Typography'
 
 function App() {
   return (
     <>
       <div>nguyên trong nghia</div>
+      <Typography variant="h2">Typography</Typography>
+
       <Button variant="text">Text</Button>
       <Button variant="contained">Contained</Button>
       <Button variant="outlined">Outlined</Button>
