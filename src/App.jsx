@@ -1,12 +1,3 @@
-import Button from '@mui/material/Button'
-
-import { pink } from '@mui/material/colors'
-import HomeIcon from '@mui/icons-material/Home'
-
-import AccessAlarmIcon from '@mui/icons-material/AccessAlarm'
-import ThreeDRotation from '@mui/icons-material/ThreeDRotation'
-import Typography from '@mui/material/Typography'
-
 import { useColorScheme } from '@mui/material/styles'
 
 import InputLabel from '@mui/material/InputLabel'
@@ -18,6 +9,7 @@ import Box from '@mui/material/Box'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest'
+import Container from '@mui/material/Container'
 
 function ModeSelect() {
   const { mode, setMode } = useColorScheme()
@@ -55,43 +47,45 @@ function ModeSelect() {
     </FormControl>
   )
 }
-// lưu localStore
-function ModeToggle() {
-  const { mode, setMode } = useColorScheme()
-  return (
-    <Button
-      onClick={() => {
-        setMode(mode === 'light' ? 'dark' : 'light')
-      }}
-    >
-      {mode === 'light' ? 'Turn dark' : 'Turn light'}
-    </Button>
-  )
-}
+
 function App() {
   return (
-    <>
-      <ModeSelect />
-      <hr />
-      <ModeToggle />
-      <hr />
-      <div>nguyên trong nghia</div>
-      <Typography variant="h2">Typography</Typography>
-
-      <Button variant="text">Text</Button>
-      <Button variant="contained">Contained</Button>
-      <Button variant="outlined">Outlined</Button>
-
-      <br />
-      <HomeIcon color="primary" />
-      <HomeIcon color="secondary" />
-      <HomeIcon color="success" />
-      <HomeIcon color="action" />
-      <HomeIcon color="disabled" />
-      <HomeIcon sx={{ color: pink[500] }} />
-      <AccessAlarmIcon />
-      <ThreeDRotation />
-    </>
+    <Container disableGutters maxWidth="false" sx={{ height: '100vh' }}>
+      <Box
+        sx={{
+          width: '100%',
+          height: theme => theme.trello.appBarHeight,
+          backgroundColor: 'primary.light',
+          display: 'flex',
+          alignItems: 'center'
+        }}
+      >
+        <ModeSelect />
+      </Box>
+      <Box
+        sx={{
+          width: '100%',
+          height: theme => theme.trello.boardBarHeight,
+          backgroundColor: 'primary.dark',
+          display: 'flex',
+          alignItems: 'center'
+        }}
+      >
+        Board bar
+      </Box>
+      <Box
+        sx={{
+          width: '100%',
+          height: theme =>
+            `calc(100vh - (${theme.trello.appBarHeight} + ${theme.trello.boardBarHeight}))`,
+          backgroundColor: 'primary.main',
+          display: 'flex',
+          alignItems: 'center'
+        }}
+      >
+        Board content
+      </Box>
+    </Container>
   )
 }
 
