@@ -25,7 +25,9 @@ function AppBar() {
         height: theme => theme.trello.appBarHeight,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        gap: 2,
+        overflowX: 'auto'
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -34,6 +36,7 @@ function AppBar() {
           <SvgIcon
             component={trelloIcon}
             inheritViewBox
+            fontSize="small"
             sx={{ color: 'primary.main' }}
           />
           <Typography
@@ -48,29 +51,32 @@ function AppBar() {
           </Typography>
         </Box>
 
-        <Workspace />
-        <Recent />
-        <Starred />
-        <Templates />
-
-        <Button variant="outlined">Outlined</Button>
+        {/* Default breakpoints MUI */}
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+          <Workspace />
+          <Recent />
+          <Starred />
+          <Templates />
+          <Button variant="outlined">Outlined</Button>
+        </Box>
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <TextField
           id="outlined-search"
-          label="Search field"
+          label="Search..."
           type="search"
           size="small"
+          sx={{ minWidth: '120px' }}
         />
         <ModeSelect />
 
         <Tooltip title="Notifications">
           <Badge color="secondary" variant="dot">
-            <NotificationsActiveIcon />
+            <NotificationsActiveIcon sx={{ color: 'primary.main' }} />
           </Badge>
         </Tooltip>
-        <Tooltip title="Help?">
+        <Tooltip title="Help?" sx={{ color: 'primary.main' }}>
           <HelpOutlineIcon />
         </Tooltip>
         <Profile />
