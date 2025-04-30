@@ -7,6 +7,14 @@ const theme = extendTheme({
     appBarHeight: '58px',
     boardBarHeight: '68px'
   },
+  typography: {
+    body1: {
+      lineHeight: 'none'
+    },
+    body2: {
+      lineHeight: 'none'
+    }
+  },
   colorSchemes: {
     light: {
       palette: {
