@@ -36,6 +36,7 @@ function AppBar() {
         justifyContent: 'space-between',
         gap: 2,
         overflowX: 'auto',
+        '&::-webkit-scrollbar-track': { m: 2 },
         bgcolor: theme =>
           theme.palette.mode === 'dark' ? '#2c3e50' : '#1565c0'
       }}
@@ -122,7 +123,7 @@ function AppBar() {
         <ModeSelect />
 
         <Tooltip title="Notifications">
-          <Badge color="secondary" variant="dot">
+          <Badge color="warning" variant="dot">
             <NotificationsActiveIcon sx={{ color: 'white' }} />
           </Badge>
         </Tooltip>
