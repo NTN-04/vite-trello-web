@@ -13,7 +13,7 @@ const theme = extendTheme({
     boardBarHeight: BOARD_BAR_HEIGHT,
     boarContentHeight: BOARD_CONTENT_HEIGHT,
     columnHeaderHeight: COLUMN_HEADER_HEIGHT,
-    columnFooterHeight: COLUMN_HEADER_HEIGHT
+    columnFooterHeight: COLUMN_FOOTER_HEIGHT
   },
   typography: {
     body1: {

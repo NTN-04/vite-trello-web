@@ -10,6 +10,7 @@ import AvatarGroup from '@mui/material/AvatarGroup'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import { Tooltip } from '@mui/material'
+import { capitalizeFirstLetter } from '~/utils/formatters'
 
 const Menu_Style = {
   color: 'white',
@@ -27,7 +28,7 @@ const Menu_Style = {
   }
 }
 
-function BoardBar() {
+function BoardBar({ board }) {
   return (
     <Box
       sx={{
@@ -48,10 +49,15 @@ function BoardBar() {
         <Chip
           sx={Menu_Style}
           icon={<DashboardIcon />}
-          label="NTN-Dev"
+          label={board?.title} // truyền từ mockData
           clickable
         />
-        <Chip sx={Menu_Style} icon={<VpnLockIcon />} label="Public" clickable />
+        <Chip
+          sx={Menu_Style}
+          icon={<VpnLockIcon />}
+          label={capitalizeFirstLetter(board?.type)} // 'public' or 'private'
+          clickable
+        />
         <Chip
           sx={Menu_Style}
           icon={<AddToDriveIcon />}

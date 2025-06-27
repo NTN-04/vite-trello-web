@@ -8,22 +8,15 @@ import AttachmentIcon from '@mui/icons-material/Attachment'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 
-function Card({ temporaryHideMedia }) {
-  if (temporaryHideMedia) {
+function Card({ card }) {
+  const shouldShowCardAction = () => {
     return (
-      <MuiCard
-        sx={{
-          cursor: 'pointer',
-          boxShadow: '0 1px 1px rgba(0,0,0,0.2)',
-          overflow: 'unset'
-        }}
-      >
-        <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
-          <Typography>Card item 01</Typography>
-        </CardContent>
-      </MuiCard>
+      !!card?.memberIds?.length ||
+      !!card?.comments?.length ||
+      !!card?.attachments?.length
     )
   }
+
   return (
     <MuiCard
       sx={{
@@ -32,25 +25,33 @@ function Card({ temporaryHideMedia }) {
         overflow: 'unset'
       }}
     >
-      <CardMedia
-        sx={{ height: 140 }}
-        image="https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482740MMK/anh-mo-ta.png"
-        title="green iguana"
-      />
+      {/* Nếu tồn tại cover mới hiện ảnh */}
+      {card?.cover && <CardMedia sx={{ height: 140 }} image={card?.cover} />}
+
       <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
-        <Typography>NguyenTrongNghia Fullstack</Typography>
+        <Typography>{card?.title}</Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small" startIcon={<GroupIcon />}>
-          20
-        </Button>
-        <Button size="small" startIcon={<ForumIcon />}>
-          50
-        </Button>
-        <Button size="small" startIcon={<AttachmentIcon />}>
-          15
-        </Button>
-      </CardActions>
+
+      {shouldShowCardAction() && (
+        <CardActions>
+          {/* nếu TRUE mới show thông tin */}
+          {!!card?.memberIds?.length && (
+            <Button size="small" startIcon={<GroupIcon />}>
+              {card?.memberIds?.length}
+            </Button>
+          )}
+          {!!card?.comments?.length && (
+            <Button size="small" startIcon={<ForumIcon />}>
+              {card?.comments?.length}
+            </Button>
+          )}
+          {!!card?.attachments?.length && (
+            <Button size="small" startIcon={<AttachmentIcon />}>
+              {card?.attachments?.length}
+            </Button>
+          )}
+        </CardActions>
+      )}
     </MuiCard>
   )
 }

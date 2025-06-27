@@ -17,12 +17,16 @@ import Cloud from '@mui/icons-material/Cloud'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Box from '@mui/material/Box'
 import ListCards from './ListCards/ListCards'
+import { mapOrder } from '~/utils/sorts'
 
-function Column() {
+function Column({ column }) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const handleClick = event => setAnchorEl(event.currentTarget)
   const handleClose = () => setAnchorEl(null)
+
+  // Hàm sắp xếp cards
+  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
 
   return (
     <Box
@@ -49,7 +53,7 @@ function Column() {
         }}
       >
         <Typography sx={{ fontWeight: 'bold', cursor: 'pointer' }}>
-          Column title
+          {column?.title}
         </Typography>
         <Box>
           <ExpandMoreIcon
@@ -111,7 +115,7 @@ function Column() {
       </Box>
 
       {/* List card */}
-      <ListCards />
+      <ListCards cards={orderedCards} />
 
       {/* Footer */}
       <Box
