@@ -18,8 +18,23 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Box from '@mui/material/Box'
 import ListCards from './ListCards/ListCards'
 import { mapOrder } from '~/utils/sorts'
+// drag/drop
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 function Column({ column }) {
+  // drag and drop
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id: column._id,
+      data: { ...column }
+    })
+
+  const dndKitColumnStyle = {
+    transform: CSS.Translate.toString(transform),
+    transition
+  }
+
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const handleClick = event => setAnchorEl(event.currentTarget)
@@ -30,6 +45,10 @@ function Column({ column }) {
 
   return (
     <Box
+      ref={setNodeRef}
+      style={dndKitColumnStyle}
+      {...attributes}
+      {...listeners}
       sx={{
         minWidth: '300px',
         maxWidth: '300px',
