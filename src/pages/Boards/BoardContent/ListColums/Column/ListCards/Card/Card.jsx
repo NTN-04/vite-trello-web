@@ -32,7 +32,8 @@ function Card({ card }) {
   const dndKitCardStyle = {
     transform: CSS.Translate.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : undefined // khi đang kéo làm mờ giữ chỗ
+    opacity: isDragging ? 0.5 : undefined, // khi đang kéo làm mờ giữ chỗ
+    border: isDragging ? '2px solid #2980b9' : undefined
   }
   return (
     <MuiCard
