@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import ListColumns from './ListColums/ListColumns'
 import { mapOrder } from '~/utils/sorts'
 import {
@@ -11,7 +11,11 @@ import {
   useSensors,
   DragOverlay,
   defaultDropAnimationSideEffects,
-  closestCorners
+  closestCorners,
+  pointerWithin,
+  rectIntersection,
+  getFirstCollision,
+  closestCenter
 } from '@dnd-kit/core' // thư viện kéo thả
 import { arrayMove } from '@dnd-kit/sortable' // sx mảng sau kéo
 import { cloneDeep } from 'lodash' // thư viện dùng xử lý mảng, object...
@@ -53,6 +57,9 @@ function BoardContent({ board }) {
   const [activeDragItemData, setActiveDragItemIdData] = useState(null)
   const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] =
     useState(null) // mảng column gốc
+
+  // Điểm va chạm cuối cùng
+  const lastOverId = useRef(null)
 
   useEffect(() => {
     const orderedColumns = mapOrder(
@@ -310,13 +317,64 @@ function BoardContent({ board }) {
     })
   }
 
+  // Custom thuật toán va chạm cho kéo các card
+  // args = arguments -> đối số, tham số
+  const collisionDetectionStrategy = useCallback(
+    args => {
+      if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+        return closestCorners({ ...args })
+      }
+
+      // Card
+
+      // Tìm các điểm giao nhau, va chạm
+      const pointerIntersections = pointerWithin(args)
+      // Va chạm trả về 1 mảng
+      const Intersections =
+        pointerIntersections?.length > 0
+          ? pointerIntersections
+          : rectIntersection(args)
+
+      // Lấy overId đầu tiên trong intersections ở trên
+      let overId = getFirstCollision(Intersections, 'id')
+      if (overId) {
+        const checkColumn = orderedColumnsState.find(
+          column => column._id === overId
+        )
+        if (checkColumn) {
+          // console.log('overId before: ', overId)
+          // ghi dè lại overId
+          overId = closestCenter({
+            ...args,
+            droppableContainers: args.droppableContainers.filter(container => {
+              return (
+                container.id !== overId &&
+                checkColumn?.cardOrderIds?.includes(container.id)
+              )
+            })
+          })[0]?.id
+          // console.log('overId after: ', overId)
+        }
+
+        lastOverId.current = overId
+        return [{ id: overId }]
+      }
+
+      // nếu overId là null trả về mảng rỗng
+      return lastOverId.current ? [{ id: lastOverId.current }] : []
+    },
+    [activeDragItemType, orderedColumnsState]
+  )
+
   return (
     <DndContext
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
       // thuật toán va chạm closest corners - dnn kit docs -> DndContext -> algorithms
-      collisionDetection={closestCorners}
+      // collisionDetection={closestCorners}
+      // Tụ custom chiến lược / thuật toán va chạm để fix lỗi và tối ưu (video 37)
+      collisionDetection={collisionDetectionStrategy}
       sensors={sensors}
     >
       <Box
